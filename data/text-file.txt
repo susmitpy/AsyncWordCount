@@ -1,0 +1,3 @@
+this is a sample text file that can be uploaded to the async word count web application. 
+the application will return the top 5 most frequent words in the file. Feel free to upload your own text file and see the results.
+This idea was inspired by word count program which is hello world of Hadoop to explain map reduce.

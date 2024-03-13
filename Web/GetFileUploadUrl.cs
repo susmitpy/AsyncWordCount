@@ -20,14 +20,14 @@ namespace AWC.Function
             _logger = logger;
         }
 
-        private string GenerateUri(string connectionId)
+        private string GenerateUri(string userId)
         {
             string storageAccountConnectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
             DateTimeOffset expiryTime = DateTime.UtcNow.AddHours(1);
             var blobServiceClient = new BlobServiceClient(storageAccountConnectionString);
             var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
 
-            var blobName = $"{connectionId}_{Guid.NewGuid()}.txt";
+            var blobName = $"{userId}_{Guid.NewGuid()}.txt";
             var blobClient = containerClient.GetBlobClient(blobName);
 
             var sasBuilder = new BlobSasBuilder
@@ -50,7 +50,7 @@ namespace AWC.Function
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            var uri = GenerateUri(data.connectionId);
+            var uri = GenerateUri(data.userId);
             return new OkObjectResult(new
             {
                 uri = uri.ToString()
@@ -58,5 +58,5 @@ namespace AWC.Function
         }
     }
 
-    public record ReqData(string connectionId);
+    public record ReqData(string userId);
 }

@@ -19,9 +19,11 @@ namespace AWC.Function
         [Function("negotiate")]
         public async Task<HttpResponseData> Negotiate(
             [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req,
-            [SignalRConnectionInfoInput(HubName = "serverless", UserId ="${headers.uuid}")] MyConnectionInfo connectionInfo,
-            FunctionContext context)
+            [SignalRConnectionInfoInput(HubName = "serverless", UserId = "{headers.userid}")] MyConnectionInfo connectionInfo)
         {
+            var userId = req.Headers.FirstOrDefault(h => h.Key == "userid").Value.FirstOrDefault();
+            _logger.LogInformation($"Connected to {userId}");
+
             var response = req.CreateResponse(HttpStatusCode.OK);
             response.Headers.Add("Access-Control-Allow-Origin", "*");
             await response.WriteAsJsonAsync(new { url = connectionInfo.Url, accessToken = connectionInfo.AccessToken });
@@ -29,23 +31,25 @@ namespace AWC.Function
             return response;
         }
 
-        [Function("broadcast")]
-        [SignalROutput(HubName = "serverless")]
-        public SignalRMessageAction Broadcast(
-            [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req
-        ) {
-            var userId = req.Headers.FirstOrDefault(h => h.Key == "uuid").Value.FirstOrDefault();
-            _logger.LogInformation($"Broadcasting to {userId}");
-            SignalRMessageAction action = new SignalRMessageAction("newMessage", ["Hello from serverless function"]);
+        /* 
+        A test function to test sending a message to a particular user using SignalR before implementing in blob trigger
 
-            // SignalRMessageAction action = new SignalRMessageAction("newMessage", ["Hello from serverless function"])
-            // {
-            //     UserId = userId
-            // };
+                [Function("broadcast")]
+                [SignalROutput(HubName = "serverless")]
+                public SignalRMessageAction Broadcast(
+                    [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req
+                ) {
+                    var userId = req.Headers.FirstOrDefault(h => h.Key == "userid").Value.FirstOrDefault();
+                    _logger.LogInformation($"Broadcasting to {userId}");
+                    SignalRMessageAction action = new SignalRMessageAction("newMessage", ["Hello from serverless function"])
+                    {
+                        UserId = userId
+                    };
 
-            return action;
+                    return action;
 
-        }
+                }
+                */
     }
 
     public class MyConnectionInfo

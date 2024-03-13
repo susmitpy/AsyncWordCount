@@ -1,16 +1,20 @@
 const signalR = require('@microsoft/signalr');
 const axios = require('axios');
-const uuid = "abcd1234"
+const functionKey = '8vEAiL9HZPEHcubTZC5F77wDHxCu3fk3I_-BqkqWJbL8AzFu0fGLAg=='
 
-const negotiateEndpoint = 'http://localhost:7071/api/negotiate';
+const userId = "abcd1234"
+// const negotiateEndpoint = 'http://localhost:7071/api/negotiate';
+const negotiateEndpoint = 'https://awcworker.azurewebsites.net/api/negotiate';
+
 
 // Function to negotiate and obtain SignalR connection info
 const negotiateSignalR = async () => {
     try {
-        const response = await axios.post(negotiateEndpoint, {
+        const response = await axios.post(negotiateEndpoint, null, {
             headers: {
                 'Content-Type': 'application/json',
-                'uuid': uuid
+                'userid': userId,
+                'x-functions-key': functionKey
             }
         })
         const connectionInfo = response.data;
@@ -47,7 +51,7 @@ const connectToSignalR = (url, accessToken) => {
     });
 
     connection.on('newMessage', (message) => {
-        console.log(`Received message from hub: ${message}`);
+        console.log(`Received message from hub: ${JSON.stringify(message)}`);
     });
 };
 
