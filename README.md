@@ -1,5 +1,8 @@
 # Async Word Count
 
+## Demo Video
+https://youtu.be/1_YNMmNs1T8
+
 This is a sample project I built to get hands on experience with Azure Functions. 
 
 User and logic flow is as follows:
