@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "2d75499d-42cd-471d-818c-5e2544a2159a",
-		"name": "AsyncWordCount",
+		"name": "RealTimeWordCount",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "21920696"
 	},
@@ -120,7 +120,7 @@
 				"body": {
 					"mode": "file",
 					"file": {
-						"src": "/Users/susmitvengurlekar/Work/azure/AsyncWordCount/data/text-file.txt"
+						"src": "/Users/susmitvengurlekar/Work/azure/RealTimeWordCount/data/text-file.txt"
 					}
 				},
 				"url": {

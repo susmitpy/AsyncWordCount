@@ -1,4 +1,4 @@
-# Async Word Count
+# Real Time Word Count
 
 ## Demo Video
 https://youtu.be/1_YNMmNs1T8
